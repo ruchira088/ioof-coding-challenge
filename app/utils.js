@@ -14,21 +14,11 @@ const monthDays = [
         months: [2]
     }
 ]
-//
-// const getDifference = (date_1, date_2, days = 0) => {
-//
-//     if(areDatesEqual(date_1, date_2)) {
-//         return days
-//     } else {
-//         return getDifference(addDay(date_1), date_2, days+1)
-//     }
-// }
-
 
 const getDifference = (date_1, date_2, days = 0) => {
     const {day, month, year} = date_1
 
-    if(areDatesEqual(date_1, date_2)) {
+    if(compareDates(date_1, date_2) == 0) {
         return days
     } else {
         if(day == 1 && month == 1 && year != date_2.year) {
@@ -48,8 +38,14 @@ const getDifference = (date_1, date_2, days = 0) => {
     }
 }
 
-const areDatesEqual = ({day, month, year}, date_2) => (
-    day == date_2.day && month == date_2.month && year == date_2.year
+const compareDates = (date_1, date_2) => (
+    constants.DATE_COMPARE_ORDER.reduce((result, field) => {
+        if(result != 0) {
+            return result
+        } else {
+            return date_1[field] - date_2[field]
+        }
+    }, 0)
 )
 
 const getMonthDays = (month, year) => {
@@ -93,9 +89,9 @@ const splitDateString = dateString => dateString.trim().split(" ")
 
 const convertStringToDateObject = dateString => {
     if(validateDateString(dateString)) {
-        const [day, month, year] = splitDateString(dateString)
+        const [day, month, year] = splitDateString(dateString).map(Number)
 
-        return {day: parseInt(day), month: parseInt(month), year: parseInt(year)}
+        return {day, month, year}
     }
 
     throw new Error(`${dateString} does NOT conform to the accepted date format DD MM YYYY`)
@@ -105,20 +101,26 @@ const validateDateString = dateString => {
     const dateValueArray = splitDateString(dateString)
 
     if(dateValueArray.length == 3) {
-        const [day, month, year] = dateValueArray
+        const [day, month, year] = dateValueArray.map(Number)
 
-        const isValidDay = inputDay => (inputDay >= constants.MIN_DAY && inputDay <= constants.MAX_DAY)
+        const isValidDay = (inputDay, inputMonth, inputYear) => (
+            inputDay >= constants.MIN_DAY && inputDay <= getMonthDays(inputMonth, inputYear)
+        )
         const isValidMonth = inputMonth => (inputMonth >= constants.MIN_MONTH && inputMonth <= constants.MAX_MONTH)
         const isValidYear = inputYear => inputYear >= constants.MIN_YEAR
 
-        return isValidDay(day) && isValidMonth(month) && isValidYear(year)
+        return isValidMonth(month) && isValidYear(year) && isValidDay(day, month, year)
     }
 
     return false
 }
 
 module.exports = {
-    isLeapYear,
     convertStringToDateObject,
-    getDifference
+    getDifference,
+    testing: {
+        isLeapYear,
+        getMonthDays,
+        validateDateString
+    }
 }

@@ -7,5 +7,6 @@ module.exports = {
     DAYS_IN_A_LEAP_YEAR: 366,
     DAYS_IN_A_NON_LEAP_YEAR: 365,
     THIRTY_DAY_MONTHS: [4, 6, 9, 11],
-    THIRTY_ONE_DAY_MONTHS: [1, 3, 5, 7, 8, 10, 12]
+    THIRTY_ONE_DAY_MONTHS: [1, 3, 5, 7, 8, 10, 12],
+    DATE_COMPARE_ORDER: ["year", "month", "day"]
 }
