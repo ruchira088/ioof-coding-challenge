@@ -5,7 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/utilsTest.js"
   },
   "author": "Ruchira Jayasekara <ruchira088@gmail.com>",
   "license": "ISC",
