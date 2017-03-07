@@ -113,7 +113,7 @@ const splitDateString = dateString => dateString.trim().split(" ")
  * Converts a date string into a date object
  */
 const convertStringToDateObject = dateString => {
-    if(validateDateString(dateString)) {
+    if(dateString != null && validateDateString(dateString)) {
         const [day, month, year] = splitDateString(dateString).map(Number)
 
         return {day, month, year}
