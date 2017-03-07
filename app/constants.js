@@ -4,6 +4,7 @@ module.exports = {
     MAX_MONTH: 12,
     MIN_MONTH: 1,
     MIN_YEAR: 1900,
+    MAX_YEAR: 2100,
     DAYS_IN_A_LEAP_YEAR: 366,
     DAYS_IN_A_NON_LEAP_YEAR: 365,
     THIRTY_DAY_MONTHS: [4, 6, 9, 11],

@@ -135,7 +135,7 @@ const validateDateString = dateString => {
             inputDay >= constants.MIN_DAY && inputDay <= getMonthDays(inputMonth, inputYear)
         )
         const isValidMonth = inputMonth => (inputMonth >= constants.MIN_MONTH && inputMonth <= constants.MAX_MONTH)
-        const isValidYear = inputYear => inputYear >= constants.MIN_YEAR
+        const isValidYear = inputYear => (inputYear >= constants.MIN_YEAR && inputYear <= constants.MAX_YEAR)
 
         return isValidMonth(month) && isValidYear(year) && isValidDay(day, month, year)
     }
