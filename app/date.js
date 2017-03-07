@@ -1,5 +1,9 @@
 const constants = require("./constants")
+const messages = require("./messages")
 
+/**
+ * The mappings for the number of days in a month
+ */
 const monthDays = [
     {
         getDays: () => 31,
@@ -15,6 +19,9 @@ const monthDays = [
     }
 ]
 
+/**
+ * Returns the number of days between 2 date objects
+ */
 const getDifference = (date_1, date_2, days = 0) => {
     const {day, month, year} = date_1
 
@@ -38,6 +45,12 @@ const getDifference = (date_1, date_2, days = 0) => {
     }
 }
 
+/**
+ * Compares 2 dates and returns one of the following results,
+ *   (1) A value greater than zero if date_1 is after date_2
+ *   (2) Zero if date_1 and date_2 are the same date
+ *   (3) A value less than zero if date_1 is before date_2
+ */
 const compareDates = (date_1, date_2) => (
     constants.DATE_COMPARE_ORDER.reduce((result, field) => {
         if(result != 0) {
@@ -48,12 +61,18 @@ const compareDates = (date_1, date_2) => (
     }, 0)
 )
 
+/**
+ * Returns the number of days in a given month
+ */
 const getMonthDays = (month, year) => {
     const {getDays} = monthDays.find(({months}) => months.includes(month))
 
     return getDays(isLeapYear(year))
 }
 
+/**
+ * Returns a date which is incremented by a single day
+ */
 const addDay = date => {
     const {day, month, year} = date
 
@@ -78,6 +97,9 @@ const addDay = date => {
     }
 }
 
+/**
+ * Returns true if the passed in year is a leap year, and false otherwise
+ */
 const isLeapYear = year => {
     const isDivisible = number => divisor => number % divisor == 0
     const isYearDivisible = isDivisible(year)
@@ -87,6 +109,9 @@ const isLeapYear = year => {
 
 const splitDateString = dateString => dateString.trim().split(" ")
 
+/**
+ * Converts a date string into a date object
+ */
 const convertStringToDateObject = dateString => {
     if(validateDateString(dateString)) {
         const [day, month, year] = splitDateString(dateString).map(Number)
@@ -94,9 +119,12 @@ const convertStringToDateObject = dateString => {
         return {day, month, year}
     }
 
-    throw new Error(`${dateString} does NOT conform to the accepted date format DD MM YYYY`)
+    throw new Error(`${dateString} ${messages.ERROR.INVALID_DATE}`)
 }
 
+/**
+ * Validates a date string
+ */
 const validateDateString = dateString => {
     const dateValueArray = splitDateString(dateString)
 
@@ -115,12 +143,30 @@ const validateDateString = dateString => {
     return false
 }
 
+/**
+ * Returns the number of days between 2 date strings. The date strings must
+ * have the format of "DD MM YYYY". The start date must be before or equal to
+ * the end date.
+ */
+const getDateDifference = (start, end) => {
+    const startDate = convertStringToDateObject(start)
+    const endDate = convertStringToDateObject(end)
+
+    if(compareDates(startDate, endDate) > 0) {
+        throw new Error(messages.ERROR.END_DATE_BEFORE_START_DATE)
+    }
+
+    return getDifference(startDate, endDate)
+}
+
 module.exports = {
-    convertStringToDateObject,
-    getDifference,
+    getDateDifference,
     testing: {
+        addDay,
         isLeapYear,
         getMonthDays,
-        validateDateString
+        validateDateString,
+        compareDates,
+        convertStringToDateObject
     }
 }
