@@ -29,7 +29,7 @@ The root directory of the project contains text file titled `input.txt`. If the 
 
 It will pass `01 02 2006` as the start date and `21 02 2006` as the end date to the application.
 
-If the dates are passed via the input file, you can **MUST** run the application by,
+If the dates are passed via the input file, you **MUST** run the application by,
 ```sh
 npm start
 ```
