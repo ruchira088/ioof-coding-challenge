@@ -39,7 +39,7 @@ const fetchDatesFromFile = filePath => new Promise((resolve, reject) => {
 
 /**
  * Fetches the dates. It will initially fetch the dates from the command line. If no
- * dates passes in the command line, then it will fetch the dates from the input file.
+ * dates are passed in the command line, then it will fetch the dates from the input file.
  */
 const fetchDates = () => {
     const commandLineDates = fetchDatesFromCommandLine(process.argv)
